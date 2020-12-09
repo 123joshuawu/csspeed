@@ -1,12 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <link rel="stylesheet" href="styles.css">
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <script src="index.js"></script>
-</head>
-<body onload="loadPlay();">
-    
-</body>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="index.js"></script>
+  </head>
+  <body onload="loadPlay();">
+    <div id="header" class="header">
+      <button
+        id="play-quit-btn"
+        class="btn btn-danger float-left"
+        onclick="window.location = 'index.html'"
+      >
+        <strong>Quit</strong>
+      </button>
+      <h2 id="play-time-text">20 seconds elapsed</h2>
+      <button id="play-submit-btn" class="btn btn-primary float-right">
+        <strong>Submit and check my score</strong>
+      </button>
+    </div>
+    <div id="play-body">
+      <div class="half">
+        <div id="play-instructions-container">
+          <p>
+            <strong>INSTRUCTIONS:</strong>
+            <br />
+
+            Change the CSS to match this element:
+            <div id="play-target-shape-container"><div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div></div>
+          </p>
+
+          <p>Your output is shown on the right</p>
+        </div>
+        <div class="container">
+          <button class="btn btn-secondary"><strong>Reset CSS</strong></button>
+        </div>
+        <textarea id="play-code-textarea" placeholder="alksjdflkj"></textarea>
+      </div>
+      <div id="play-center-divider"></div>
+      <div class="half">
+        <div id="play-playground-container" class="container"><div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div></div>
+      </div>
+    </div>
+  </body>
 </html>
