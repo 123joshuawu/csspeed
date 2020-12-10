@@ -2,27 +2,56 @@ var timeElapsed = 0;
 var timer = null;
 var badRegex = false; 
 
+function chooseOne(arr,ignore = []) {
+  let filtered = arr.filter(item => !ignore.includes(item))
+  return filtered[Math.floor(Math.random() * filtered.length)]
+}
+
 const urlParams = new URLSearchParams(window.location.search);
-const shapeType = urlParams.get('shape')
+var shapeType = urlParams.get('shape')
+if(shapeType == "random") {
+  shapeType = chooseOne(["circle","rectangle"])
+}
 
 const baseShapeText = "width:100px;\nheight:100px;\nbackground:black;\n";
 
 const playTargetShapeContainer = document.getElementById(
-  "play-target-shape-container"
+  "play-target-shape"
 );
 const playPlaygroundContainer = document.getElementById(
   "play-playground-container"
 );
 
-const shapeGenerators = {
-  random: () => {return `<div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div>`},
-  circle: () => {return `<div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div>`},
-  rectangle: () => {return `<div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div>`},
-};
-
-function getShapeHtml() {
-  return shapeGenerators[shapeType]
+const colorOptions = ["red","orange","yellow","green","blue","purple","gray","white"]
+const borderStyles = ["solid","dashed","dotted"]
+var randRadius = Math.floor(Math.random()*25)+"px"
+var randomCSS = {
+  "background-color": chooseOne(colorOptions),
+  "width": Math.floor(Math.random()*150+25)+"px",
+  "height": Math.floor(Math.random()*150+25)+"px",
+  "border-top-left-radius": randRadius,
+  "border-top-right-radius": randRadius,
+  "border-bottom-left-radius": randRadius,
+  "border-bottom-right-radius": randRadius,
+  "border-width": Math.floor(Math.random()*3)+"px",
+  "border-style": chooseOne(borderStyles)
 }
+randomCSS["border-color"] = chooseOne(colorOptions,[randomCSS["background-color"]])
+
+if(shapeType == "circle") {
+  randRadius = (parseFloat(randomCSS["width"])/2)+"px"
+  randomCSS["border-top-left-radius"] = randRadius
+  randomCSS["border-top-right-radius"] = randRadius
+  randomCSS["border-bottom-left-radius"] = randRadius
+  randomCSS["border-bottom-right-radius"] = randRadius
+  randomCSS["height"] = randomCSS["width"]
+}
+
+const shapeGenerator = () => {
+  var finalShape = document.createElement("div")
+  $(finalShape).css(randomCSS) 
+  return finalShape
+};
 
 function startTimer() {
   return setInterval(function () {
@@ -35,12 +64,11 @@ function startTimer() {
 
 function updatePlaygroundItem() {
   var textarea = $("#play-code-textarea")
-  if(textarea.val().match(/\d+\s*(em|rem)/)) {
+  if(textarea.val().match(/\d+\s*(em|rem|%)/) || textarea.val().match(/#/)) {
     badRegex = true
     textarea.css({
       "color": "red"
     })
-    alert("Hey... don't type that");
   } else {
     badRegex = false
 
@@ -54,14 +82,16 @@ function updatePlaygroundItem() {
   }
 }
 
-function resetCodeTextarea() {
-  badRegex = false
+function resetCodeTextarea(getConfirm = false) {
+  if(getConfirm && $("#play-code-textarea").val() != baseShapeText && confirm("Are you sure?")) {
+    badRegex = false
 
-  $("#play-code-textarea").val(
-    "width:100px;\nheight:100px;\nbackground:black;\n"
-  );
-
-  updatePlaygroundItem();
+    $("#play-code-textarea").val(
+      "width:100px;\nheight:100px;\nbackground:black;\n"
+    );
+  
+    updatePlaygroundItem();
+  }
 }
 
 function parseCssStringToObject(str) {
@@ -76,7 +106,47 @@ function parseCssStringToObject(str) {
 }
 
 function getScore() {
-  return 0;
+
+  var points = 100
+  points -= timeElapsed
+
+  var targetShape = $("#play-target-shape").children()[0]
+  targetShape = $(targetShape)
+  const myShape = $("#play-playground-item")
+
+  const pointsPer = 50
+
+  const cssOptions = Object.keys(randomCSS)
+  cssOptions.forEach(cssProp => {
+    const myCSSVal = myShape.css(cssProp)
+    const targetCSSVal = targetShape.css(cssProp)
+
+    if(myCSSVal && targetCSSVal) {
+      if(cssProp == "width") {
+        points += pointsPer*(1-Math.abs((targetShape.width() - myShape.width()) / targetShape.width()))
+      } else if(cssProp == "height") {
+        points += pointsPer*(1-Math.abs((targetShape.height() - myShape.height()) / targetShape.height()))
+      } else if(cssProp == "background-color") {
+        points += (myCSSVal == targetCSSVal ? pointsPer : 0)
+      } else if(cssProp == "border-top-left-radius") {
+        points += (pointsPer/4)*(1-Math.abs((parseFloat(targetCSSVal) - parseFloat(myCSSVal)) / parseFloat(targetCSSVal)))
+      } else if(cssProp == "border-top-right-radius") {
+        points += (pointsPer/4)*(1-Math.abs((parseFloat(targetCSSVal) - parseFloat(myCSSVal)) / parseFloat(targetCSSVal)))
+      } else if(cssProp == "border-bottom-left-radius") {
+        points += (pointsPer/4)*(1-Math.abs((parseFloat(targetCSSVal) - parseFloat(myCSSVal)) / parseFloat(targetCSSVal)))
+      } else if(cssProp == "border-bottom-right-radius") {
+        points += (pointsPer/4)*(1-Math.abs((parseFloat(targetCSSVal) - parseFloat(myCSSVal)) / parseFloat(targetCSSVal)))
+      } else if(cssProp == "border-style") {
+        points += (myCSSVal == targetCSSVal ? pointsPer : 0)
+      } else if(cssProp == "border-color") {
+        points += (myCSSVal == targetCSSVal ? pointsPer : 0)
+      } else if(cssProp == "border-width") {
+        points += pointsPer*(1-Math.abs((parseFloat(targetCSSVal) - parseFloat(myCSSVal)) / parseFloat(targetCSSVal)))
+      }
+    }
+  })
+  points = (points < 0 ? 0 : Math.floor(points))
+  return points;
 }
 
 function main() {
@@ -87,7 +157,13 @@ function main() {
 
   resetCodeTextarea();
 
-  $("#play-target-shape-container").html(getShapeHtml());
+  $("#play-target-shape").html(shapeGenerator());
+}
+
+function quit() {
+  if(confirm("Are you sure?")){
+    location.href = 'index.html'
+  }
 }
 
 function finish() {
@@ -106,7 +182,15 @@ function finish() {
   } else {
     prevScores = [newScore]
   }
+  prevScores.sort((a,b) => a.points-b.points)
   localStorage.setItem("scores",JSON.stringify(prevScores))
+
+  var alertMsg = ""
+  if(prevScores[prevScores.length-1].points == newScore.points) {
+    alertMsg += "NEW HIGH SCORE!\n\n"
+  }
+  alertMsg += "Points: "+newScore.points+"\nSeconds: "+newScore.seconds+"\nShape: "+newScore.shape
+  alert(alertMsg)
 
   window.location.href = "index.html"
 }
