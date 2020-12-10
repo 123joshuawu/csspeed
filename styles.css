@@ -5,12 +5,17 @@ body {
   margin: 0rem;
   color: white;
   background: #6f7c68;
-  /* opacity: 0; */
+  animation-name: example;
+  animation-duration: 2s;
 }
 /* 
 body.loaded {
 
 } */
+@keyframes example {
+  0%   {opacity: 0;}
+  100% {opacity: 1;}
+}
 
 .btn {
   border-radius: 0.2rem;
@@ -26,7 +31,8 @@ body.loaded {
   outline: none;
 }
 
-.btn:hover {
+.btn:hover,
+.btn:focus {
   box-shadow: 0px 3px 3px 0px black;
 }
 
@@ -109,13 +115,28 @@ caption {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   text-align: left;
 }
 h2 {
   text-align: left;
   font-size: 2rem;
 }
+.typewriter {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  width: 0;
+  letter-spacing: 0em; /* Adjust as needed */
+  animation:
+    typing 2s steps(40, end) 1s forwards
+}
+/* The typing effect */
+@keyframes typing {
+  from { width: 0; margin-right: 100% }
+  to { width: 100%; margin-right: 0; }
+}
+
 h3 {
   width: 100%;
   text-align: left;
