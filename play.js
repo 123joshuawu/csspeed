@@ -82,8 +82,8 @@ function updatePlaygroundItem() {
   }
 }
 
-function resetCodeTextarea(getConfirm = false) {
-  if(getConfirm && $("#play-code-textarea").val() != baseShapeText && confirm("Are you sure?")) {
+function resetCodeTextarea(init = false) {
+  if(init || ($("#play-code-textarea").val() != baseShapeText && confirm("Are you sure?"))) {
     badRegex = false
 
     $("#play-code-textarea").val(
@@ -155,7 +155,7 @@ function main() {
 
   $("#play-code-textarea").bind("input propertychange", updatePlaygroundItem);
 
-  resetCodeTextarea();
+  resetCodeTextarea(true);
 
   $("#play-target-shape").html(shapeGenerator());
 }

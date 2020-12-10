@@ -1,6 +1,5 @@
 function loadLanding() {
   var scores = JSON.parse(localStorage.getItem("scores"));
-  console.log("Scores:", scores);
 
   if(scores) {
     var tbody = $("tbody")[0]
