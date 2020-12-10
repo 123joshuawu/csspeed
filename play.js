@@ -1,5 +1,9 @@
 var timeElapsed = 0;
 var timer = null;
+var badRegex = false; 
+
+const urlParams = new URLSearchParams(window.location.search);
+const shapeType = urlParams.get('shape')
 
 const baseShapeText = "width:100px;\nheight:100px;\nbackground:black;\n";
 
@@ -11,15 +15,13 @@ const playPlaygroundContainer = document.getElementById(
 );
 
 const shapeGenerators = {
-  circle: generateCircleHtml,
+  random: () => {return `<div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div>`},
+  circle: () => {return `<div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div>`},
+  rectangle: () => {return `<div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div>`},
 };
 
-function generateCircleHtml() {
-  return `<div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div>`;
-}
-
 function getShapeHtml() {
-  return generateCircleHtml();
+  return shapeGenerators[shapeType]
 }
 
 function startTimer() {
@@ -32,12 +34,29 @@ function startTimer() {
 }
 
 function updatePlaygroundItem() {
-  $("#play-playground-item").css(
-    parseCssStringToObject($("#play-code-textarea").val())
-  );
+  var textarea = $("#play-code-textarea")
+  if(textarea.val().match(/\d+\s*(em|rem)/)) {
+    badRegex = true
+    textarea.css({
+      "color": "red"
+    })
+    alert("Hey... don't type that");
+  } else {
+    badRegex = false
+
+    textarea.css({
+      "color": "black"
+    })
+
+    $("#play-playground-item").css(
+      parseCssStringToObject($("#play-code-textarea").val())
+    );
+  }
 }
 
 function resetCodeTextarea() {
+  badRegex = false
+
   $("#play-code-textarea").val(
     "width:100px;\nheight:100px;\nbackground:black;\n"
   );
@@ -56,7 +75,12 @@ function parseCssStringToObject(str) {
     .reduce((o, [key, value]) => Object.assign(o, { [key]: value }), {});
 }
 
+function getScore() {
+  return 0;
+}
+
 function main() {
+
   timer = startTimer();
 
   $("#play-code-textarea").bind("input propertychange", updatePlaygroundItem);
@@ -67,9 +91,24 @@ function main() {
 }
 
 function finish() {
+
+  if(badRegex) {
+    alert("CSS input contains bad values")
+    return
+  }
   clearInterval(timer);
 
-  alert(`${timeElapsed}`);
+  //set to localStorage
+  var prevScores = JSON.parse(localStorage.getItem("scores"))
+  const newScore = {points: getScore(), seconds: timeElapsed, shape: shapeType}
+  if(prevScores) {
+    prevScores.push(newScore)
+  } else {
+    prevScores = [newScore]
+  }
+  localStorage.setItem("scores",JSON.stringify(prevScores))
+
+  window.location.href = "index.html"
 }
 
 $(document).ready(main);
