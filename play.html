@@ -16,7 +16,7 @@
       >
         <strong>Quit</strong>
       </button>
-      <h2 id="play-time-text"></h2>
+      <h2 id="play-time-text">0 seconds elapsed</h2>
       <button id="play-submit-btn" class="btn btn-primary float-right" onclick="finish();">
         <strong>Submit and check my score</strong>
       </button>
@@ -26,13 +26,13 @@
         <div id="play-instructions-container">
           <p>
             <strong>INSTRUCTIONS:</strong>
-            <br />
-
-            Change the CSS to match this element:
-            <div id="play-target-shape-container"></div>
+            <br/>
+            Change the CSS to match the target (top) element:
           </p>
-
-          <p>Your output is shown on the right</p>
+          <p>Please use "px" only!</p>
+          <p>
+            <i>Invalid char sets: "rem", "em", "%", "#"</i>
+          </p>
         </div>
         <div class="container">
           <button class="btn btn-secondary" onclick="resetCodeTextarea();"><strong>Reset CSS</strong></button>
@@ -41,7 +41,10 @@
       </div>
       <div id="play-center-divider"></div>
       <div class="half">
-        <div id="play-playground-container" class="container">
+        <div id="play-target-shape-container">
+          <div id="play-target-shape"></div>
+        </div>
+        <div id="play-playground-container">
           <div id="play-playground-item"></div>
         </div>
       </div>

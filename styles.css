@@ -53,6 +53,10 @@ body {
   background: #727171;
 }
 
+.clear-storage {
+  float: right;
+}
+
 .container {
   margin: 0 auto;
   height: 25%;
@@ -175,10 +179,18 @@ h3 {
   font-weight: 300;
 }
 
-#play-target-shape-container {
+#play-target-shape,
+#play-playground-item {
   position: absolute;
-  right: 3rem;
-  top: 2rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#play-target-shape-container,
+#play-playground-container {
+  position: relative;
+  height: 50%;
 }
 
 #play-center-divider {
@@ -189,6 +201,7 @@ h3 {
   border-left: 4px solid #fff09f;
 }
 
-#play-playground-container {
+#play-playground-item {
   margin: auto;
+  height: 50%;
 }
