@@ -82,14 +82,16 @@ function updatePlaygroundItem() {
   }
 }
 
-function resetCodeTextarea() {
-  badRegex = false
+function resetCodeTextarea(getConfirm = false) {
+  if(getConfirm && $("#play-code-textarea").val() != baseShapeText && confirm("Are you sure?")) {
+    badRegex = false
 
-  $("#play-code-textarea").val(
-    "width:100px;\nheight:100px;\nbackground:black;\n"
-  );
-
-  updatePlaygroundItem();
+    $("#play-code-textarea").val(
+      "width:100px;\nheight:100px;\nbackground:black;\n"
+    );
+  
+    updatePlaygroundItem();
+  }
 }
 
 function parseCssStringToObject(str) {
