@@ -4,19 +4,20 @@
     <link rel="stylesheet" href="styles.css" />
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script src="index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script src="play.js"></script>
   </head>
-  <body onload="loadPlay();">
+  <body>
     <div id="header" class="header">
       <button
         id="play-quit-btn"
         class="btn btn-danger float-left"
-        onclick="window.location = 'index.html'"
+        onclick="location.href = 'index.html'"
       >
         <strong>Quit</strong>
       </button>
-      <h2 id="play-time-text">20 seconds elapsed</h2>
-      <button id="play-submit-btn" class="btn btn-primary float-right">
+      <h2 id="play-time-text"></h2>
+      <button id="play-submit-btn" class="btn btn-primary float-right" onclick="finish();">
         <strong>Submit and check my score</strong>
       </button>
     </div>
@@ -28,7 +29,7 @@
             <br />
 
             Change the CSS to match this element:
-            <div id="play-target-shape-container"><div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div></div>
+            <div id="play-target-shape-container"></div>
           </p>
 
           <p>Your output is shown on the right</p>
@@ -36,11 +37,13 @@
         <div class="container">
           <button class="btn btn-secondary"><strong>Reset CSS</strong></button>
         </div>
-        <textarea id="play-code-textarea" placeholder="alksjdflkj"></textarea>
+        <textarea id="play-code-textarea"></textarea>
       </div>
       <div id="play-center-divider"></div>
       <div class="half">
-        <div id="play-playground-container" class="container"><div style="border-radius:50%;height:90px;width:90px;background:purple;border:1px solid red;"></div></div>
+        <div id="play-playground-container" class="container">
+          <div id="play-playground-item"></div>
+        </div>
       </div>
     </div>
   </body>
