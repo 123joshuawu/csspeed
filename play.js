@@ -194,5 +194,3 @@ function finish() {
 
   window.location.href = "index.html"
 }
-
-$(document).ready(main);
