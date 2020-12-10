@@ -160,6 +160,12 @@ function main() {
   $("#play-target-shape").html(shapeGenerator());
 }
 
+function quit() {
+  if(confirm("Are you sure?")){
+    location.href = 'index.html'
+  }
+}
+
 function finish() {
 
   if(badRegex) {
