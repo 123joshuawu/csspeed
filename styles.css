@@ -13,8 +13,12 @@ body.loaded {
 
 } */
 @keyframes example {
-  0%   {opacity: 0;}
-  100% {opacity: 1;}
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .btn {
@@ -128,13 +132,18 @@ h2 {
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   width: 0;
   letter-spacing: 0em; /* Adjust as needed */
-  animation:
-    typing 2s steps(40, end) 1s forwards
+  animation: typing 2s steps(40, end) 1s forwards;
 }
 /* The typing effect */
 @keyframes typing {
-  from { width: 0; margin-right: 100% }
-  to { width: 100%; margin-right: 0; }
+  from {
+    width: 0;
+    margin-right: 100%;
+  }
+  to {
+    width: 100%;
+    margin-right: 0;
+  }
 }
 
 h3 {
