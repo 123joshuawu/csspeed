@@ -11,7 +11,7 @@
 
 Since this app was developed using only JavaScript, CSS, and HTML, all you need to do is open `index.html` in your web browser of choice.
 
-A version of this application is also available at [https://123joshuawu.github.io/csspeed/]()
+A version of this application is also available at [https://123joshuawu.github.io/csspeed/](https://123joshuawu.github.io/csspeed/)
 
 ### Project Proposal
 
